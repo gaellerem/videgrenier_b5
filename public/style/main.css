@@ -547,9 +547,6 @@ video {
     font-size: 20px;
     text-align: center; }
 
-.login-window div.checkbox > label {
-  padding-left: 40px; }
-
 .login-window label.checkbox {
   position: absolute;
   margin-left: -40px; }
