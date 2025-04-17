@@ -68,6 +68,7 @@ class Config
      */
     public static function SHOW_ERRORS(): bool
     {
-        return true;
+        self::loadEnv();
+        return $_ENV['SHOW_ERROS'] ?? '';
     }
 }
