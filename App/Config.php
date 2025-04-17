@@ -14,7 +14,7 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = 'db'; # Nom du service dans le compose.yaml
 
     /**
      * Database name
