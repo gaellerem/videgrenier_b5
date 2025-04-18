@@ -1,0 +1,32 @@
+version : '3.8'
+
+services:
+  server:
+    build:
+      context: ../..
+      args:
+        APACHE_CONF: ${APACHE_CONF}
+        APP_ENV: ${APP_ENV}
+    ports:
+      - 9000:80
+    depends_on:
+      - db
+    volumes:
+    - ../..:/var/www/html
+    - .env:/var/www/html/.env
+    container_name: videgrenier-web-dev
+
+  db:
+    image: mysql:8.0
+    container_name: videgrenier-db-dev
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ../../sql/dev_import.sql:/docker-entrypoint-initdb.d/import.sql
+    ports:
+      - 3306:3306
+

@@ -27,10 +27,15 @@ class Config
      * @var string
      */
     public static function DB_HOST(): string
-    {
-        self::loadEnv();
-        return $_ENV['DB_HOST'] ?? 'default_db';
+{
+    self::loadEnv();
+
+    if (!isset($_ENV['DB_HOST'])) {
+        throw new \RuntimeException("⚠️ DB_HOST is not defined in environment variables.");
     }
+
+    return $_ENV['DB_HOST'];
+}
 
     /**
      * Database name
@@ -39,7 +44,7 @@ class Config
     public static function DB_NAME(): string
     {
         self::loadEnv();
-        return $_ENV['DB_NAME'] ?? 'default_db';
+        return $_ENV['DB_NAME'];
     }
 
     /**
@@ -49,7 +54,7 @@ class Config
     public static function DB_USER(): string
     {
         self::loadEnv();
-        return $_ENV['DB_USER'] ?? 'default_user';
+        return $_ENV['DB_USER'];
     }
 
     /**
@@ -59,7 +64,7 @@ class Config
     public static function DB_PASSWORD(): string
     {
         self::loadEnv();
-        return $_ENV['DB_PASSWORD'] ?? '';
+        return $_ENV['DB_PASSWORD'];
     }
 
     /**
@@ -69,6 +74,6 @@ class Config
     public static function SHOW_ERRORS(): bool
     {
         self::loadEnv();
-        return $_ENV['SHOW_ERROS'] ?? '';
+        return $_ENV['SHOW_ERROS'];
     }
 }

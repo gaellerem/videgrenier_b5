@@ -1,6 +1,8 @@
 # Étape 1 : Utiliser l'image PHP avec Apache
 FROM php:8.3.0-apache
 
+ARG APACHE_CONF
+ARG APP_ENV
 # Étape 2 : Installer les extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
     git \
@@ -13,21 +15,17 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Activer mod_rewrite pour Apache (utile pour les routes)
 RUN a2enmod rewrite
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+COPY apache/${APACHE_CONF} /etc/apache2/sites-available/000-default.conf
 
-# Copier le code source de l'application
-COPY ./public /var/www/html
-COPY ./App /var/www/html/App
-COPY ./Core /var/www/html/Core
-COPY ./composer.json /var/www/html/composer.json
+# COPY docker/${APP_ENV}/.env /var/www/html/.env
+COPY . /var/www/html
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
 
 # Installer les dépendances via Composer
 RUN composer install --no-dev --no-interaction
-
-# Copier le fichier de configuration Apache (si nécessaire)
-COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Définir les bonnes permissions pour Apache
 RUN chown -R www-data:www-data /var/www/html
