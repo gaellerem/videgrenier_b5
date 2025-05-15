@@ -42,17 +42,23 @@ class User extends \Core\Controller
      */
     public function registerAction()
     {
-        if(isset($_POST['submit'])){
+        if (isset($_POST['submit'])) {
             $f = $_POST;
 
-            if($f['password'] !== $f['password-check']){
+            if ($f['password'] !== $f['password-check']) {
                 // TODO: Gestion d'erreur côté utilisateur
             }
 
-            // validation
+            // Validation (optionnelle)
 
             $this->register($f);
-            // TODO: Rappeler la fonction de login pour connecter l'utilisateur
+
+            // ✅ Connexion automatique
+            $this->login($f);
+
+            // ✅ Redirection vers le compte
+            header('Location: /account');
+            return;
         }
 
         View::renderTemplate('User/register.html');
