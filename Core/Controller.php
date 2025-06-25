@@ -26,6 +26,17 @@ abstract class Controller
     public function __construct($route_params)
     {
         $this->route_params = $route_params;
+
+        // Auto-login via cookie "remember_me"
+        if (!isset($_SESSION['user']) && isset($_COOKIE['remember_me'])) {
+            $user = \App\Models\User::getByRememberToken($_COOKIE['remember_me']);
+            if ($user) {
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'username' => $user['username'],
+                ];
+            }
+        }
     }
 
     /**
