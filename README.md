@@ -47,6 +47,12 @@ Les modèles sont utilisés pour récupérer ou stocker des données dans l'appl
 $db = static::getDB();
 ```
 
+## Lancement Docker
+
+```bash
+./start.sh [dev|prod]
+```
+
 ## Lancement des tests unitaires
 ```bash
  ./vendor/bin/phpunit tests
