@@ -47,6 +47,24 @@ Les modèles sont utilisés pour récupérer ou stocker des données dans l'appl
 $db = static::getDB();
 ```
 
+## Lancement Docker
+Les fichiers .env doivent être créés dans les dossiers docker/dev et docker/prod
+Ils doivent contenir ces informations (⚠️ ne pas mettre d'espace après le "=")
+APACHE_CONF=
+APP_ENV=
+PORT=
+
+DB_HOST=
+DB_ROOT_PASSWORD=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+SHOW_ERROS=
+
+```bash
+./start.sh [dev|prod]
+```
+
 ## Lancement des tests unitaires
 ```bash
  ./vendor/bin/phpunit tests
