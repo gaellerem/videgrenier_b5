@@ -38,9 +38,34 @@
                     </div>
                     <div class="u-area mt-small">
 
-                    <a name="submit" href="mailto:{{article.email}}" class="btn btn-primary u-btn">Contacter {{article
-                        .username}}</a>
+                        <button id="show-contact-form" class="btn btn-primary u-btn">Contacter {{ article.username }}</button>
 
+                        <div id="contact-form-container" style="display: none; margin-top: 20px;">
+                            <form action="/contact/{{ article.id }}" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Nom</label>
+                                    <input type="text" name="name" id="name" class="form-control" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Adresse email</label>
+                                    <input type="email" name="email" id="email" class="form-control" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea name="message" id="message" rows="4" class="form-control" required></textarea>
+                                </div>
+
+                                <!--TODO A modifier quand le backend sera prêt
+                                <button type="submit" class="btn btn-success u-btn">Envoyer</button>
+                                -->
+                                <button id="send-message" class="btn btn-success u-btn">Envoyer</button>
+                            </form>
+                        </div>
+                        <div id="confirmation-message" style="display: none; color: green; margin-top: 20px;">
+                            Message envoyé !
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,5 +95,22 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const contact_btn = document.getElementById("show-contact-form");
+        const form = document.getElementById("contact-form-container");
+        const send_btn = document.getElementById("send-message");
+        const confirmation_message = document.getElementById("confirmation-message");
 
+        contact_btn.addEventListener("click", function () {
+            form.style.display = "block";
+            contact_btn.style.display = "none";
+        });
+
+        send_btn.addEventListener("click", function () {
+            form.style.display = "none";
+            confirmation_message.style.display = "block";
+        });
+    });
+</script>
 {% endblock body %}

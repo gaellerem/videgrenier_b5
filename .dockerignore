@@ -1,0 +1,19 @@
+# Exclure les dossier non utiles
+vendor
+
+# Exclure les fichiers ou dossiers temporaires
+*.log
+*.tmp
+node_modules/
+*.swp
+*.swo
+*.conf
+
+# Exclure d'autres répertoires que tu ne veux pas inclure dans l'image Docker
+.git
+.gitignore
+
+.vscode
+README.md
+.dockerignore
+Dockerfile

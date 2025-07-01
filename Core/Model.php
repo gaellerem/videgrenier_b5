@@ -12,24 +12,37 @@ use App\Config;
  */
 abstract class Model
 {
+    /**
+     * The PDO database connection
+     *
+     * @var PDO|null
+     */
+    protected static ?PDO $db = null;
 
     /**
      * Get the PDO database connection
      *
-     * @return mixed
+     * @return PDO
      */
-    protected static function getDB()
+    protected static function getDB(): PDO
     {
-        static $db = null;
-
-        if ($db === null) {
-            $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
-            $db = new PDO($dsn, Config::DB_USER, Config::DB_PASSWORD);
+        if (static::$db === null) {
+            $dsn = 'mysql:host=' . Config::DB_HOST() . ';dbname=' . Config::DB_NAME() . ';charset=utf8';
+            static::$db = new PDO($dsn, Config::DB_USER(), Config::DB_PASSWORD());
 
             // Throw an Exception when an error occurs
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            static::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
 
-        return $db;
+        return static::$db;
+    }
+
+    /**
+     * For testing purposes only: allows injecting a mock PDO instance.
+     */
+    public static function setDB(PDO $pdo): void
+    {
+        static::$db = $pdo;
     }
 }
+

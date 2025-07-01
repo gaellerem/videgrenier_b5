@@ -2,41 +2,78 @@
 
 namespace App;
 
+use Dotenv\Dotenv;
+
 /**
  * Application configuration
  *
- * PHP version 7.0
+ * PHP version 7.0+
  */
 class Config
 {
+    private static $loaded = false;
+
+    private static function loadEnv(): void
+    {
+        if (!self::$loaded) {
+            $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+            $dotenv->load();
+            self::$loaded = true;
+        }
+    }
 
     /**
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    public static function DB_HOST(): string
+{
+    self::loadEnv();
+
+    if (!isset($_ENV['DB_HOST'])) {
+        throw new \RuntimeException("⚠️ DB_HOST is not defined in environment variables.");
+    }
+
+    return $_ENV['DB_HOST'];
+}
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'videgrenierenligne';
+    public static function DB_NAME(): string
+    {
+        self::loadEnv();
+        return $_ENV['DB_NAME'];
+    }
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'webapplication';
+    public static function DB_USER(): string
+    {
+        self::loadEnv();
+        return $_ENV['DB_USER'];
+    }
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = '653rag9T';
+    public static function DB_PASSWORD(): string
+    {
+        self::loadEnv();
+        return $_ENV['DB_PASSWORD'];
+    }
 
     /**
      * Show or hide error messages on screen
      * @var boolean
      */
-    const SHOW_ERRORS = true;
+    public static function SHOW_ERRORS(): bool
+    {
+        self::loadEnv();
+        return $_ENV['SHOW_ERROS'];
+    }
 }

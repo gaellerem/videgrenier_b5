@@ -3,14 +3,10 @@
 namespace App\Controllers;
 
 use App\Config;
-use App\Model\UserRegister;
 use App\Models\Articles;
 use App\Utility\Hash;
-use App\Utility\Session;
 use \Core\View;
 use Exception;
-use http\Env\Request;
-use http\Exception\InvalidArgumentException;
 
 /**
  * User controller
@@ -42,17 +38,23 @@ class User extends \Core\Controller
      */
     public function registerAction()
     {
-        if(isset($_POST['submit'])){
+        if (isset($_POST['submit'])) {
             $f = $_POST;
 
-            if($f['password'] !== $f['password-check']){
+            if ($f['password'] !== $f['password-check']) {
                 // TODO: Gestion d'erreur côté utilisateur
             }
 
-            // validation
+            // Validation (optionnelle)
 
             $this->register($f);
-            // TODO: Rappeler la fonction de login pour connecter l'utilisateur
+
+            // ✅ Connexion automatique
+            $this->login($f);
+
+            // ✅ Redirection vers le compte
+            header('Location: /account');
+            return;
         }
 
         View::renderTemplate('User/register.html');
@@ -95,26 +97,39 @@ class User extends \Core\Controller
         }
     }
 
-    private function login($data){
+    private function login($data)
+    {
         try {
-            if(!isset($data['email'])){
+            if (!isset($data['email'])) {
                 throw new Exception('TODO');
             }
 
             $user = \App\Models\User::getByLogin($data['email']);
 
-            if (Hash::generate($data['password'], $user['salt']) !== $user['password']) {
+            if (!$user || Hash::generate($data['password'], $user['salt']) !== $user['password']) {
                 return false;
             }
 
-            // TODO: Create a remember me cookie if the user has selected the option
-            // to remained logged in on the login form.
-            // https://github.com/andrewdyer/php-mvc-register-login/blob/development/www/app/Model/UserLogin.php#L86
-
-            $_SESSION['user'] = array(
+            $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
-            );
+            ];
+
+            // ✅ Remember me
+            if (!empty($data['remember'])) {
+                $token = bin2hex(random_bytes(32)); // 64-char
+                \App\Models\User::storeRememberToken($user['id'], $token);
+
+                setcookie(
+                    'remember_me',
+                    $token,
+                    time() + (86400 * 30), // 30 jours
+                    '/',
+                    '', // domaine
+                    isset($_SERVER['HTTPS']),
+                    true // httpOnly
+                );
+            }
 
             return true;
 
@@ -132,16 +147,16 @@ class User extends \Core\Controller
      * @return boolean
      * @since 1.0.2
      */
-    public function logoutAction() {
+    public function logoutAction()
+    {
+        if (isset($_COOKIE['remember_me'])) {
+            setcookie('remember_me', '', time() - 3600, '/');
+            if (isset($_SESSION['user']['id'])) {
+                \App\Models\User::storeRememberToken($_SESSION['user']['id'], null);
+            }
+        }
 
-        /*
-        if (isset($_COOKIE[$cookie])){
-            // TODO: Delete the users remember me cookie if one has been stored.
-            // https://github.com/andrewdyer/php-mvc-register-login/blob/development/www/app/Model/UserLogin.php#L148
-        }*/
-        // Destroy all data registered to the session.
-
-        $_SESSION = array();
+        $_SESSION = [];
 
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
@@ -153,7 +168,7 @@ class User extends \Core\Controller
 
         session_destroy();
 
-        header ("Location: /");
+        header("Location: /");
 
         return true;
     }

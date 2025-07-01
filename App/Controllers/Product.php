@@ -25,12 +25,38 @@ class Product extends \Core\Controller
                 $f = $_POST;
 
                 // TODO: Validation
+                // Liste des champs obligatoires
+                $requiredFields = [
+                    'name' => 'Titre',
+                    'description' => 'Description',
+                    'city' => 'Ville',
+                ];
+
+                $missingFields = [];
+                foreach ($requiredFields as $field => $label) {
+                    if (empty(trim($f[$field] ?? ''))) {
+                        $missingFields[] = $label;
+                    }
+                }
+
+                // Vérifie si une image a bien été envoyée
+                if (!isset($_FILES['picture']) || $_FILES['picture']['error'] !== UPLOAD_ERR_OK || empty($_FILES['picture']['tmp_name'])) {
+                    $missingFields[] = 'Image';
+                }
+
+                if (!empty($missingFields)) {
+                    $errors = "Tous les champs sont requis. Il manque : " . implode(', ', $missingFields) . ".";
+                    View::renderTemplate('Product/Add.html', [
+                        'error' => $errors,
+                        'old' => $f // Pour garder les valeurs déjà remplies
+                    ]);
+                    return;
+                }
 
                 $f['user_id'] = $_SESSION['user']['id'];
                 $id = Articles::save($f);
 
                 $pictureName = Upload::uploadFile($_FILES['picture'], $id);
-
                 Articles::attachPicture($id, $pictureName);
 
                 header('Location: /product/' . $id);

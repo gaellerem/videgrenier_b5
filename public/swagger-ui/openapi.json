@@ -1,0 +1,303 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "My API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Affiche la page d'accueil",
+        "responses": {
+          "200": {
+            "description": "Page d'accueil rendue avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "summary": "Affiche le formulaire de connexion",
+        "responses": {
+          "200": {
+            "description": "Formulaire de connexion rendu avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Traite le formulaire de connexion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "remember": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "302": {
+            "description": "Redirige vers la page du compte si la connexion est réussie",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/account"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Échec de la connexion"
+          }
+        }
+      }
+    },
+    "/register": {
+      "get": {
+        "summary": "Affiche le formulaire d'inscription",
+        "responses": {
+          "200": {
+            "description": "Formulaire d'inscription rendu avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Traite le formulaire d'inscription",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password-check": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "username", "password", "password-check"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "302": {
+            "description": "Redirige vers la page du compte si l'inscription est réussie",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/account"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Échec de l'inscription"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "Déconnecte l'utilisateur",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirige vers la page d'accueil après déconnexion",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get": {
+        "summary": "Affiche les informations du compte utilisateur",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informations du compte utilisateur rendues avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product": {
+      "get": {
+        "summary": "Affiche la page d'ajout de produit",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Page d'ajout de produit rendue avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Traite le formulaire d'ajout de produit",
+        "security": [
+          {
+            "sessionAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "picture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["name", "description", "city", "picture"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "302": {
+            "description": "Redirige vers la page du produit ajouté",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "example": "/product/{id}"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Échec de l'ajout du produit"
+          }
+        }
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "summary": "Affiche les détails d'un produit spécifique",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails du produit rendus avec succès",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Produit non trouvé"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sessionAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "PHPSESSID"
+      }
+    }
+  }
+}

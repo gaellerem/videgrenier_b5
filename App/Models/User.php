@@ -45,21 +45,22 @@ class User extends Model {
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-
-    /**
-     * ?
-     * @access public
-     * @return string|boolean
-     * @throws Exception
-     */
-    public static function login() {
+    public static function storeRememberToken($userId, $token)
+    {
         $db = static::getDB();
+        $stmt = $db->prepare("UPDATE users SET remember_token = :token WHERE id = :id");
+        $stmt->bindParam(':token', $token);
+        $stmt->bindParam(':id', $userId);
+        $stmt->execute();
+    }
 
-        $stmt = $db->prepare('SELECT * FROM articles WHERE articles.id = ? LIMIT 1');
-
-        $stmt->execute([$id]);
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    public static function getByRememberToken($token)
+    {
+        $db = static::getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE remember_token = :token LIMIT 1");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
 
