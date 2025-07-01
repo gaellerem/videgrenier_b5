@@ -69,3 +69,10 @@ SHOW_ERROS=
 ```bash
  ./vendor/bin/phpunit tests
 ```
+
+## Documentation API
+La documentation OpenAPI est disponible à l'endpoint suivant :
+
+/swagger-ui/
+
+Le fichier source est situé dans public/swagger-ui/openapi.json.

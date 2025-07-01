@@ -17,6 +17,7 @@ if [ "$ENV" == "prod" ]; then
 elif [ "$ENV" == "dev" ]; then
   FOLDER="dev"
   PROJECT_NAME="videgrenier-dev"
+
 else
   echo "Environnement inconnu : $ENV"
   echo "Utilise 'dev' ou 'prod'."
