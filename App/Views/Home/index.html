@@ -70,22 +70,30 @@
         }
 
         function renderProduct($product){
-             $('<div class="col-lg-4 col-sm-6 articleitem" id="article-pattern">' +
-                '                                <div class="b-article">' +
-                '                                    <div class="v-img">' +
-                '                                        <a href="/product/'+ $product.id + '">' +
-                '                                            <img src="/storage/'+ $product.picture +'" alt=""></a>' +
-                '                                    </div>' +
-                '                                    <div class="v-desc">' +
-                '                                        <a href="/product/'+ $product.id + '">'+ $product.name+'</a>' +
-                '                                    </div>' +
-                '                                    <p>'+ $product.description.slice(0, 20) + '...</p>' +
-                '                                    <div class="v-views">' +
-                '                                        '+$product.views+' vues' +
-                '                                    </div>' +
-                '                                </div>' +
-                '</div>')
-             .appendTo($('#articlelist'));
+            const publishedAt = new Date($product.published_date);
+            const now = new Date();
+            const daysDiff = (now - publishedAt) / (1000 * 60 * 60 * 24);
+            const isNew = daysDiff < 7;
+
+            const badge = isNew ? '<p>🆕</p>' : '';
+            $('<div class="col-lg-4 col-sm-6 articleitem" id="article-pattern">' +
+                '<div class="b-article">' +
+                '   <div class="v-img">' +
+                '       <a href="/product/'+ $product.id + '">' +
+                '           <img src="/storage/'+ $product.picture +'" alt="">' +
+                '       </a>' +
+                '   </div>' +
+                '   <div class="v-desc">' +
+                '       <div>' + badge + '</div>' +
+                '       <a href="/product/'+ $product.id + '">'+ $product.name+'</a>' +
+                '   </div>' +
+                '   <p>'+ $product.description.slice(0, 20) + '...</p>' +
+                '   <div class="v-views">' +
+                '       '+$product.views+' vues' +
+                '   </div>' +
+                '</div>' +
+              '</div>')
+            .appendTo($('#articlelist'));
         }
 
         $( document ).ready(function() {
