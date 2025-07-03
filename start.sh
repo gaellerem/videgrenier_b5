@@ -40,4 +40,4 @@ fi
 
 docker compose -p "$PROJECT_NAME" --env-file .env up --build -d
 
-echo "Environnement $ENV démarré sur http://localhost:$PORT"
+echo "Environnement $ENV démarré sur http://localhost:$SERVER_PORT"
