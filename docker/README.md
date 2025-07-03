@@ -61,5 +61,4 @@ DB_NAME=
 DB_USER=
 DB_PASSWORD=
 SHOW_ERROS=[true|false]
-SQL_FILE=../../sql/[dev|prod]_import.sql
 ```

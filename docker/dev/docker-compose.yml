@@ -25,7 +25,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ${SQL_FILE}:/docker-entrypoint-initdb.d/import.sql
+      - ../../sql/${APP_ENV}_import.sql:/docker-entrypoint-initdb.d/import.sql
     ports:
       - ${DB_PORT}:${DB_PORT}
 
