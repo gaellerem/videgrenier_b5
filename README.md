@@ -51,16 +51,18 @@ $db = static::getDB();
 Les fichiers .env doivent être créés dans les dossiers docker/dev et docker/prod
 Ils doivent contenir ces informations (⚠️ ne pas mettre d'espace après le "=")
 ```txt
-APACHE_CONF=
-APP_ENV=
-PORT=
+APACHE_CONF=[dev|prod].conf
+APP_ENV=[dev|prod]
+SERVER_PORT=
 
+DB_PORT=
 DB_HOST=
 DB_ROOT_PASSWORD=
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
-SHOW_ERROS=
+SHOW_ERROS=[true|false]
+SQL_FILE=../../sql/[dev|prod]_import.sql
 ```
 Pour lancer :
 ```bash

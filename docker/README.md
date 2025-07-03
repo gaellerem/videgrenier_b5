@@ -50,10 +50,16 @@ Les fichiers `.env` contiennent les informations sensibles (base de données, mo
 Exemple de `.env` :
 
 ```env
-APACHE_CONF=dev.conf
-APP_ENV=dev
-DB_HOST=db
-DB_NAME=my_database
-DB_USER=my_user
-DB_PASSWORD=super_secret
+APACHE_CONF=[dev|prod].conf
+APP_ENV=[dev|prod]
+SERVER_PORT=
+
+DB_PORT=
+DB_HOST=
+DB_ROOT_PASSWORD=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+SHOW_ERROS=[true|false]
+SQL_FILE=../../sql/[dev|prod]_import.sql
 ```
