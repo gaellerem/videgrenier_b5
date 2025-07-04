@@ -1,5 +1,6 @@
 # Exclure les dossier non utiles
 vendor
+tests
 
 # Exclure les fichiers ou dossiers temporaires
 *.log
