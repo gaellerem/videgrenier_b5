@@ -23,7 +23,7 @@ COPY /Core /var/www/html/Core
 COPY /public /var/www/html/public
 COPY /style /var/www/html/style
 COPY composer.json /var/www/html/composer.json
-COPY .env /var/www/html/.env
+# COPY .env /var/www/html/.env
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
