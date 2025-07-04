@@ -18,8 +18,12 @@ RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 COPY apache/${APACHE_CONF} /etc/apache2/sites-available/000-default.conf
 
-# COPY docker/${APP_ENV}/.env /var/www/html/.env
-COPY . /var/www/html
+COPY /App /var/www/html/App
+COPY /Core /var/www/html/Core
+COPY /public /var/www/html/public
+COPY /style /var/www/html/style
+COPY composer.json /var/www/html/composer.json
+# COPY .env /var/www/html/.env
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
