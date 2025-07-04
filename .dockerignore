@@ -1,18 +1,20 @@
 # Exclure les dossier non utiles
 vendor
 tests
+logs
+sql
 
-# Exclure les fichiers ou dossiers temporaires
 *.log
 *.tmp
-node_modules/
 *.swp
 *.swo
-*.conf
+phpunit.xml
+*.cache
+*.sh
 
-# Exclure d'autres répertoires que tu ne veux pas inclure dans l'image Docker
 .git
 .gitignore
+.github
 
 .vscode
 README.md
