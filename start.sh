@@ -12,8 +12,8 @@ ENV=$1
 if [ "$ENV" == "prod" ]; then
   FOLDER="prod"
   PROJECT_NAME="videgrenier-prod"
-  git checkout v.1.0.0
-  git pull origin v.1.0.0
+  git checkout v1.0.0
+  git pull origin v1.0.0
 elif [ "$ENV" == "dev" ]; then
   FOLDER="dev"
   PROJECT_NAME="videgrenier-dev"
